@@ -9,9 +9,11 @@ def shestiugolnik(x, y, a, color):
     turtle.down()
     turtle.fillcolor(color)
     turtle.begin_fill()
+    
     for i in range(6):
         turtle.forward(a)
         turtle.left(60)
+        
     turtle.end_fill()
 
 def shestiugolnikW():
@@ -24,6 +26,7 @@ def trapezia(x, y, angle, top, bottom, side, color):
     turtle.down()
     turtle.fillcolor(color)
     turtle.begin_fill()
+    
     turtle.forward(bottom)
     turtle.left(angle)
     turtle.forward(side)
@@ -32,6 +35,7 @@ def trapezia(x, y, angle, top, bottom, side, color):
     turtle.left(180-angle)
     turtle.forward(side)
     turtle.left(angle)
+    
     turtle.end_fill()
 
 def trapeziaW():
@@ -44,10 +48,12 @@ def triangle(x, y, a1, s1, s2, color):
     turtle.down()
     turtle.fillcolor(color)
     turtle.begin_fill()
+    
     turtle.forward(s1)
     turtle.left(180-a1)
     turtle.forward(s2)
     turtle.goto(x, y)
+    
     turtle.end_fill()
 
 def pryamougolnyitriangleW():
@@ -60,6 +66,7 @@ def square(x, y, a, color):
     turtle.down()
     turtle.fillcolor(color)
     turtle.begin_fill()
+    
     turtle.forward(a)
     turtle.left(90)
     turtle.forward(a)
@@ -67,6 +74,7 @@ def square(x, y, a, color):
     turtle.forward(a)
     turtle.left(90)
     turtle.forward(a)
+    
     turtle.end_fill()
 
 def square1():
@@ -79,6 +87,7 @@ def rectangle(x, y, a, b, color):
     turtle.down()
     turtle.fillcolor(color)
     turtle.begin_fill()
+    
     turtle.forward(a)
     turtle.left(90)
     turtle.forward(b)
@@ -87,6 +96,7 @@ def rectangle(x, y, a, b, color):
     turtle.left(90)
     turtle.forward(b)
     turtle.left(90)
+    
     turtle.end_fill()
 
 def rectangle1():
@@ -99,6 +109,7 @@ def parallelogram(x, y, a, b, angel, color):
     turtle.down()
     turtle.fillcolor(color)
     turtle.begin_fill()
+    
     turtle.forward(a)
     turtle.left(angel)
     turtle.forward(b)
@@ -107,6 +118,7 @@ def parallelogram(x, y, a, b, angel, color):
     turtle.left(angel)
     turtle.forward(b)
     turtle.left(180-angel)
+    
     turtle.end_fill()
 
 def parallelogram1():
@@ -119,11 +131,13 @@ def romb(x, y, a, angle, color):
     turtle.down()
     turtle.fillcolor(color)
     turtle.begin_fill()
+    
     for i in range(2):
         turtle.forward(a)
         turtle.left(angle)
         turtle.forward(a)
         turtle.left(180-angle)
+        
     turtle.end_fill()
 
 def romb1():
@@ -136,9 +150,11 @@ def pentagon(x, y, a, color):
     turtle.down()
     turtle.fillcolor(color)
     turtle.begin_fill()
+    
     for i in range(5):
         turtle.forward(a)
         turtle.left(72)
+        
     turtle.end_fill()
 
 def pentagon1():
@@ -212,4 +228,5 @@ parallelogram1()
 turtle.hideturtle()
 turtle.update()
 turtle.done()
+
 
