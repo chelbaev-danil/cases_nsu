@@ -33,7 +33,7 @@ def find_secrets(text):
     api_pattern = r'\b(?:sk_live|pk_test)_[a-zA-Z0-9]{24,}\b'
     api = re.findall(api_pattern, text)
 
-    password_pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%&*])[A-Za-z\d!@#$%&*]{12,}$'
+    password_pattern = r':([A-Za-z\d!@#$%^&*()_+\-=]{8,})'
     password = re.findall(password_pattern, text)
     return {
         'api': api,
