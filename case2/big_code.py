@@ -6,8 +6,8 @@ import codecs
 
 
 def find_and_validate_credit_cards(text):
-    pattern = r'\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b'
-    cards = re.findall(pattern, text)
+    cards_pattern = r'\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b'
+    cards = re.findall(cards_pattern, text)
     valid_cards = []
     invalid_cards = []
     for card in cards:
@@ -43,7 +43,10 @@ def find_secrets(text):
 
 def find_system_info(text):
 
-    ip_pattern = r'\b(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\b'
+    ip_pattern = (
+        r'\b(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}'
+        r'(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\b'
+    )
     ips = re.findall(ip_pattern, text)
 
     basic_file_extensions = [
@@ -136,10 +139,20 @@ def analyze_logs(log_text):
     suspicious_user_agents = []
     failed_logins = []
 
-    log_pattern = r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+-\s+(\S+)\s+\[([^\]]+)\]\s+"(GET|POST|PUT|DELETE|HEAD|OPTIONS|PATCH)\s+([^\s]+)\s+HTTP/[\d\.]+"\s+(\d+)\s+(\d+|-)\s+"([^"]*)"\s+"([^"]*)"'
+    log_pattern = (
+        r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+-\s+(\S+)\s+\[([^\]]+)\]\s+'
+        r'"(GET|POST|PUT|DELETE|HEAD|OPTIONS|PATCH)\s+([^\s]+)\s+HTTP/[\d\.]+"'
+        r'\s+(\d+)\s+(\d+|-)\s+"([^"]*)"\s+"([^"]*)"'
+    )
     logs = re.findall(log_pattern, log_text)
-    sql_pattern = r"(?i)(UNION\s+SELECT|DROP\s+TABLE|INSERT\s+INTO|DELETE\s+FROM|UPDATE\s+\w+\s+SET|OR\s+\S+\s*=|AND\s+\S+\s*=|1\s*=\s*1|'\s*=\s*'|--|#|/\*)"
-    xss_pattern = r"(?i)(<script|javascript:|onerror\s*=|onload\s*=|onclick\s*=|alert\s*\(|<iframe|<svg)"
+    sql_pattern = (
+        r"(?i)(UNION\s+SELECT|DROP\s+TABLE|INSERT\s+INTO|DELETE\s+FROM|UPDATE"
+        r"\s+\w+\s+SET|OR\s+\S+\s*=|AND\s+\S+\s*=|1\s*=\s*1|'\s*=\s*'|--|#|/\*)"
+    )
+    xss_pattern = (
+        r"(?i)(<script|javascript:|onerror\s*=|onload\s*=|"
+        r"onclick\s*=|alert\s*\(|<iframe|<svg)"
+    )
     ua_pattern = r"(?i)(sqlmap|nikto|nmap|curl|wget|python|scanner)"
     login_pattern = r"(?i)/(login|admin|wp-login|signin|auth|administrator|panel|dashboard)"
     for injections in logs:
@@ -297,7 +310,7 @@ def print_report(report):
         with open("artifacts.txt", 'a', encoding='utf-8') as f:
             f.write(f'{title}\n')
             f.write(f'{"-" * 30}\n')
-            f.write(f"{data}\n")
+            f.write(f"{data}")
 
         print(f"\n{title}:")
         print("-" * 30)
