@@ -1,35 +1,13 @@
-"""Фрактальная мастерская - ВСЁ В ОДНОМ ФАЙЛЕ.
-
-Запуск:  python fractal_workshop.py
-Меню в консоли -> параметры -> фрактал рисуется в окне turtle -> снова меню.
-
-Почему окно не виснет: консольный ввод идёт в отдельном потоке, а главный
-поток всё время обновляет окно turtle.
-"""
 import colorsys
 import math
 
 import turtle
-
-
-
-# ======================================================================
-# utils
-# ======================================================================
-"""Общие вспомогательные функции для всех фракталов.
-
-Здесь лежит то, что нужно сразу нескольким ролям:
-- перемещение черепашки без следа,
-- цветной ("радужный") режим,
-- цвет по глубине рекурсии.
-"""
 
 _rainbow_on = False   # включён ли радужный режим
 _counter = 0          # сколько отрезков уже нарисовано (нужно для смены цвета)
 
 
 def setup_window() -> None:
-    """Создаёт окно turtle фиксированного размера (вызывается один раз)."""
     turtle.setup(900, 700)
     turtle.title("Фрактальная мастерская")
     turtle.colormode(1.0)        # цвета задаём числами от 0 до 1
@@ -37,7 +15,6 @@ def setup_window() -> None:
 
 
 def init_turtle() -> None:
-    """Настраивает черепашку перед рисованием."""
     turtle.colormode(1.0)
     turtle.hideturtle()          # саму черепашку не показываем
     turtle.speed(0)              # максимальная скорость
@@ -45,7 +22,6 @@ def init_turtle() -> None:
 
 
 def go_to(x: float, y: float, heading: float = 0) -> None:
-    """Переносит черепашку в точку (x, y) БЕЗ рисования и задаёт направление."""
     turtle.penup()
     turtle.goto(x, y)
     turtle.setheading(heading)
@@ -53,7 +29,6 @@ def go_to(x: float, y: float, heading: float = 0) -> None:
 
 
 def set_rainbow(flag: bool) -> None:
-    """Включает/выключает радужный режим и обнуляет счётчик."""
     global _rainbow_on, _counter
     _rainbow_on = bool(flag)
     _counter = 0
@@ -61,8 +36,6 @@ def set_rainbow(flag: bool) -> None:
 
 
 def draw_line(size: float) -> None:
-    """Рисует один отрезок. В радужном режиме каждый следующий отрезок
-    чуть меняет цвет, поэтому линия переливается."""
     global _counter
     if _rainbow_on:
         hue = (_counter * 0.003) % 1.0
@@ -72,8 +45,6 @@ def draw_line(size: float) -> None:
 
 
 def depth_color(level: int) -> tuple:
-    """Цвет для деревьев: чем меньше level (ближе к листьям), тем светлее зелёный.
-    Аналог подсказки turtle.color(0, 255 - depth*30, 0), только в шкале 0..1."""
     green = max(0.0, min(1.0, 1.0 - level * 0.12))
     return (0.0, green, 0.0)
 
@@ -81,18 +52,11 @@ def depth_color(level: int) -> tuple:
 # ======================================================================
 # Роль 1: basic
 # ======================================================================
-"""Роль 1. Базовые рекурсивные фракталы: двоичное дерево и "Ветка"."""
 
 
 
 def draw_binary_tree(depth: int, size: float, angle: float,
                      color_by_depth: bool = True) -> None:
-    """Двоичное дерево.
-
-    depth - глубина рекурсии, size - длина ствола, angle - угол ветвления.
-    Каждая ветка в 2 раза короче предыдущей.
-    После работы черепашка стоит там же и смотрит туда же, где была в начале.
-    """
     if color_by_depth:
         turtle.pencolor(depth_color(depth))
 
@@ -114,11 +78,6 @@ def draw_binary_tree(depth: int, size: float, angle: float,
 
 def draw_branch(n: int, size: float, angle: float = 40,
                 color_by_depth: bool = True) -> None:
-    """Фрактал "Ветка": у каждой ветки растут три маленькие веточки
-    (налево, прямо и направо).
-
-    n - глубина, size - длина первой ветки, angle - угол между веточками.
-    """
     if color_by_depth:
         turtle.pencolor(depth_color(n))
 
@@ -139,13 +98,7 @@ def draw_branch(n: int, size: float, angle: float = 40,
 # ======================================================================
 # Роль 2: koch
 # ======================================================================
-"""Роль 2. Кривая Коха, снежинка Коха и кривая Минковского."""
-
-
-
 def koch(order: int, size: float) -> None:
-    """Кривая Коха. Каждый отрезок заменяется на 4 отрезка в 3 раза короче
-    (с "уголком" посередине). Углы: 60 и 120 градусов."""
     if order == 0:
         draw_line(size)
         return
@@ -159,15 +112,12 @@ def koch(order: int, size: float) -> None:
 
 
 def koch_snowflake(order: int, size: float) -> None:
-    """Снежинка Коха = три кривые Коха, образующие треугольник."""
     for _ in range(3):
         koch(order, size)
         turtle.right(120)
 
 
 def minkowski(order: int, size: float) -> None:
-    """Кривая Минковского. Каждый отрезок заменяется на 8 отрезков
-    в 4 раза короче. Повороты по 90 градусов (влево/вправо)."""
     if order == 0:
         draw_line(size)
         return
@@ -203,13 +153,6 @@ def triangle_height(size: float) -> float:
 
 
 def ice_fractal_1(order: int, size: float) -> None:
-    """"Ледяной" фрактал №1 (ледяной крест).
-
-    Отрезок делится на 3 части. В точке между 1-й и 2-й частью вырастает
-    "иголка" вверх и вниз - получается крестик, как кристаллик льда.
-    Всего 7 кусочков в 3 раза короче: 3 по горизонтали + 4 по вертикали.
-    Черепашка в конце возвращается в исходный угол.
-    """
     if order == 0:
         draw_line(size)
         return
@@ -228,13 +171,6 @@ def ice_fractal_1(order: int, size: float) -> None:
 
 
 def ice_fractal_2(order: int, size: float, angle: float = 85) -> None:
-    """"Ледяной" фрактал №2 (кривая Чезаро - "острая" версия кривой Коха).
-
-    Отрезок заменяется на 4 части. Угол angle = 85 градусов (у Коха было бы 60),
-    поэтому "иголка" получается острее и похожа на ледяной зубец.
-    Длина одной части: r = size / (2 + 2*cos(angle)) - так конец
-    ломаной попадает ровно в конец исходного отрезка.
-    """
     if order == 0:
         draw_line(size)
         return
@@ -403,7 +339,6 @@ FRACTALS = {
 
 
 def ask_params(choice: str) -> dict:
-    """Спрашивает у пользователя все параметры выбранного фрактала (в консоли)."""
     title, params_spec, _ = FRACTALS[choice]
     print(f"\n--- {title} ---")
     params = {}
@@ -413,8 +348,6 @@ def ask_params(choice: str) -> dict:
 
 
 def render(choice: str, params: dict) -> None:
-    """Очищает экран, рисует фрактал и возвращает черепашку домой.
-    Вызывается ТОЛЬКО из главного потока - turtle (Tkinter) не любит другие потоки."""
     runner = FRACTALS[choice][2]
     turtle.reset()                       # чистый экран
     init_turtle()
@@ -426,8 +359,6 @@ def render(choice: str, params: dict) -> None:
 
 
 # ------------------------------------------------------- консольный поток
-                #===
-
 
 # ------------------------------------------------------- главный поток
 def main() -> None:
