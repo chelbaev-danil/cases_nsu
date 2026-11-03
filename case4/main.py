@@ -243,8 +243,6 @@ def show_menu() -> None:
 
 # ------------------------------------------------- безопасный ввод чисел
 def ask_number(prompt: str, kind, low, high, default):
-    """Спрашивает число, пока пользователь не введёт правильное.
-    Пустой ввод (Enter) = значение по умолчанию."""
     while True:
         raw = input(f"{prompt} [{low}..{high}, Enter = {default}]: ").strip()
         if raw == "":
