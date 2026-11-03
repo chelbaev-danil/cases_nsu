@@ -6,12 +6,7 @@ from .utils import depth_color
 
 def draw_binary_tree(depth: int, size: float, angle: float,
                      color_by_depth: bool = True) -> None:
-    """Двоичное дерево.
 
-    depth - глубина рекурсии, size - длина ствола, angle - угол ветвления.
-    Каждая ветка в 2 раза короче предыдущей.
-    После работы черепашка стоит там же и смотрит туда же, где была в начале.
-    """
     if color_by_depth:
         turtle.pencolor(depth_color(depth))
 
@@ -33,11 +28,7 @@ def draw_binary_tree(depth: int, size: float, angle: float,
 
 def draw_branch(n: int, size: float, angle: float = 40,
                 color_by_depth: bool = True) -> None:
-    """Фрактал "Ветка": у каждой ветки растут три маленькие веточки
-    (налево, прямо и направо).
-
-    n - глубина, size - длина первой ветки, angle - угол между веточками.
-    """
+                  
     if color_by_depth:
         turtle.pencolor(depth_color(n))
 
